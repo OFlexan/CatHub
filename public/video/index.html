@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CatHub - The freshest of cat videos!</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: rgb(40, 40, 40);
+        height: 100%;
+        font-family: Helvetica, Arial, Sans-Serif;
+      }
+      
+      div.header {
+        width: 100%;
+        background-color: rgb(30, 30, 30);
+        position: fixed;
+        pointer-events: auto;
+      }
+      
+      div.header div.logo {
+        margin-left: 20%;
+      }
+      
+      div.header div.logo h1.logo {
+        color: white;
+      }
+      
+      div.header div.logo h1.logo span.orange {
+        color: black;
+        background-color: #0388fc;
+        padding: 2px 5px;
+        margin-left: 3px;
+        border-radius: 8px;
+      }
+      
+      div.header div.logo {
+        cursor: pointer;
+      }
+      
+      h1:not(h1.logo), p {
+        margin-left: 20%;
+        color: white;
+      }
+      
+      p {
+        color: gray;
+      }
+      
+      p.bold {
+        font-weight: bold;
+        color: white;
+      }
+      
+      .video-container {
+        width: 60%;
+        padding-top: 56.25%;
+        height: 0px;
+        position: relative;
+        margin: auto;
+      }
+      
+      video {
+        width: 100%;
+        height: 70%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      
+      img {
+        width: 70px;
+        height: 70px;
+        float: left;
+      }
+      
+      div.clear {
+        clear: left;
+        margin-bottom: 30px;
+      }
+      
+      div.list {
+        margin-left: 20%;
+        width: 60%;
+      }
+      
+      div.clear p {
+        margin-left: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo" onclick="location.href = '/'"><h1 class="logo">Cat<span class="orange">Hub</span></h1></div>
+    </div>
+    <br><br><br><br><br>
+    <div class="perfect-container">
+      <div class="video-container">
+        <video width="1920" height="1080" controls id="vidsrc">
+        Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <h1 id="header">Loading...</h1>
+    <p id="stats">Loading...</p>
+    <br><br>
+    <h1>Comments</h1>
+    <div class="list">
+    </div>
+    
+    <script>
+      function make_comment(data) {
+        var div = document.createElement("div");
+        div.className = "clear";
+        var img = document.createElement("img");
+        img.src = data.user.image;
+        var header = document.createElement("p");
+        header.className = "bold";
+        header.innerText = data.user.name;
+        var p = document.createElement("p");
+        p.innerText = data.content;
+        div.appendChild(img);
+        div.appendChild(header);
+        div.appendChild(p);
+        document.querySelector(".list").appendChild(div);
+      }
+      
+      async function init() {
+        var id = location.href.substring(location.href.lastIndexOf("/") + 1);
+        var data = await fetch("/api/videos?id=" + id).then((j) => j.json());
+        if (data.intermediate) {
+          location.href = "/video/intermediate?id=" + id;
+          return;
+        }
+        document.querySelector("#vidsrc").setAttribute("poster", data.thumbnail)
+        var source = document.createElement("source");
+        source.src = data.video.source;
+        source.type = "video/mp4";
+        document.querySelector("#vidsrc").appendChild(source);
+        document.querySelector("#header").innerText = data.title;
+        document.querySelector("#stats").innerText = data.stats;
+        for (var i = 0; i < data.video.comments.length; i++) {
+          make_comment(data.video.comments[i]);
+        }
+      }
+      
+      init();
+    </script>
+  </body>
+</html>

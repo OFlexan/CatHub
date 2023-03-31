@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CatHub - The freshest of cat videos!</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: rgb(40, 40, 40);
+        height: 100%;
+        font-family: Helvetica, Arial, Sans-Serif;
+      }
+      
+      div.header {
+        width: 100%;
+        background-color: rgb(30, 30, 30);
+        position: fixed;
+      }
+      
+      div.header div.logo {
+        margin-left: 20%;
+      }
+      
+      div.header div.logo h1.logo {
+        color: white;
+      }
+      
+      div.header div.logo h1.logo span.orange {
+        color: black;
+        background-color: #0388fc;
+        padding: 2px 5px;
+        margin-left: 3px;
+        border-radius: 8px;
+      }
+      
+      div.header div.logo {
+        cursor: pointer;
+      }
+      
+      div.vid {
+        clear: left;
+        margin-left: 20%;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      
+      div.vid img.thumb {
+        float: left;
+        width: 160px;
+        height: 90px;
+        margin-right: 10px;
+        border-radius: 8px;
+      }
+      
+      div.vid img.verified {
+        float: left;
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
+      
+      img.ad-banner {
+        margin: auto;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo" onclick="location.href = '/'"><h1 class="logo">Cat<span class="orange">Hub</span></h1></div>
+    </div>
+    <br><br><br><br><br>
+    <script>
+      function add_vid(data) {
+        var div = document.createElement("div");
+        div.className = "vid";
+        div.onclick = () => location.href = "/video/" + data.id;
+        var thumb = document.createElement("img");
+        thumb.className = "thumb";
+        thumb.src = data.thumbnail;
+        var header = document.createElement("h2");
+        header.innerText = data.title;
+        var stats = document.createElement("p");
+        stats.innerText = data.stats;
+        div.appendChild(thumb);
+        div.appendChild(header);
+        if (data.verified) {
+          var verified = document.createElement("img");
+          verified.className = "verified";
+          verified.src = "https://cdn-icons-png.flaticon.com/512/6364/6364343.png";
+          div.appendChild(verified);
+        }
+        div.appendChild(stats);
+        document.body.appendChild(div);
+        document.body.appendChild(document.createElement("br"));
+      }
+      
+      async function init() {
+        var arr = await fetch("/api/videos").then((j) => j.json());
+        for (var i = 0; i < arr.length; i++) add_vid(arr[i]);
+      }
+      
+      init();
+    </script>
+  </body>
+</html>

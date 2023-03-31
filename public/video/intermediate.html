@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CatHub - The freshest of cat videos!</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: rgb(40, 40, 40);
+        height: 100%;
+        font-family: Helvetica, Arial, Sans-Serif;
+      }
+      
+      div.header {
+        width: 100%;
+        background-color: rgb(30, 30, 30);
+        position: fixed;
+      }
+      
+      div.header div.logo {
+        margin-left: 20%;
+      }
+      
+      div.header div.logo h1.logo {
+        color: white;
+      }
+      
+      div.header div.logo h1.logo span.orange {
+        color: black;
+        background-color: #0388fc;
+        padding: 2px 5px;
+        margin-left: 3px;
+        border-radius: 8px;
+      }
+      
+      div.header div.logo {
+        cursor: pointer;
+      }
+      
+      h1:not(h1.logo), p {
+        margin-left: 20%;
+        color: white;
+      }
+      
+      p {
+        color: gray;
+      }
+      
+      p.bold {
+        font-weight: bold;
+        color: white;
+      }
+      
+      video {
+        width: 60%;
+        height: 60%;
+        margin-left: 20%;
+      }
+      
+      img {
+        width: 70px;
+        height: 70px;
+        float: left;
+      }
+      
+      div.clear {
+        clear: left;
+        margin-bottom: 30px;
+      }
+      
+      div.list {
+        margin-left: 20%;
+        width: 60%;
+      }
+      
+      div.clear p {
+        margin-left: 10%;
+      }
+      
+      button {
+        border: 1px solid gray;
+        color: white;
+        background-color: transparent;
+        padding: 5px;
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo" onclick="location.href = '/'"><h1 class="logo">Cat<span class="orange">Hub</span></h1></div>
+    </div>
+    <br><br><br><br><br>
+    <button onclick="location.href = '/video/' + new URLSearchParams(window.location.search).get('id')">Continue to Video</button>
+  </body>
+</html>
